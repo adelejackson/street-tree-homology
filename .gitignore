@@ -1,0 +1,10 @@
+.DS_Store/
+*.pyc
+*.tex
+*.pdf
+*.aux
+*.gz
+*.log
+*.out
+*.zip
+
