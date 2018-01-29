@@ -4,7 +4,13 @@ import math
 import matplotlib.pyplot as plt
 import numpy as np
 
+""" Plot persistence diagrams and barcodes for all samples."""
+num_sam1 = num_sam2 = 10
+dimension = 1
+
 def plot_diagram(dgm, show = False):
+    """ Slightly modified from Dionysus
+    github.com/mrzv/dionysus/blob/master/bindings/python/dionysus/plot.py"""
     inf = float('inf')
     min_birth = min(p.birth for p in dgm if p.birth != inf)
     max_birth = max(p.birth for p in dgm if p.birth != inf)
@@ -28,7 +34,8 @@ def plot_diagram(dgm, show = False):
         plt.show()
 
 def plot_bars(dgm, order = 'birth', show = False):
-    """Plot the barcode."""
+    """ Slightly modified from Dionysus
+    github.com/mrzv/dionysus/blob/master/bindings/python/dionysus/plot.py"""
 
     import matplotlib.pyplot as plt
 
@@ -43,7 +50,6 @@ def plot_bars(dgm, order = 'birth', show = False):
     if show:
         plt.show()
 
-num_sam1 = num_sam2 = 10
 samples = []
 dgms_list = []
 
@@ -62,7 +68,7 @@ for i in range(num_sam1 + num_sam2):
         plt.title('Persistence diagram for sample {:d}, homology group {:d}'.format(i, hom_dim))
         plt.savefig('./img/dgms/dgm{:d}hom{:d}.pdf'.format(i, hom_dim), bbox_inches='tight')
         plt.clf()
-    plot_bars(dgms[1], show = False)
+    plot_bars(dgms[dimension], show = False)
     plt.xlabel('Birth and death times')
     plt.title('Barcode for sample {:d}, first homology group'.format(i))
     plt.savefig('./img/dgms/bars{:d}.pdf'.format(i), bbox_inches='tight')

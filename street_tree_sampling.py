@@ -9,9 +9,11 @@ num_points = 1000
 homology_dimension = 1
 
 def get_distance(origin, destination):
+    """ Returns Euclidean distance between two 3D points."""
     return math.sqrt(np.sum([(origin[i]-destination[i])**2 for i in range(3)]))
 
 def polar_to_cartesian(lat_deg, lng_deg):
+    """Convert (latitude, longitude) point to cartesian coordinates."""
     r = 6371
     lat = math.radians(lat_deg)
     lng = math.radians(lng_deg)
@@ -32,6 +34,7 @@ for sf in [False, True]:
     polar_trees = np.genfromtxt(tree_file, delimiter=',', comments='!')
     polar_trees = polar_trees[~np.isnan(polar_trees).any(axis=1)]
 
+    # Filter SF trees for just the inner city
     if sf:
         polar_trees = polar_trees[(polar_trees[:,0] > 37.6) & (polar_trees[:,0] < 40)]
 
@@ -39,7 +42,8 @@ for sf in [False, True]:
     for tree in polar_trees:
         trees.append(polar_to_cartesian(tree[0], tree[1]))
     trees = np.array(trees)
-    print(len(trees))
+
+    # Randomly pick num_samples basepoints, at least 450m apart.
     base_points = []
     while len(base_points) < num_samples:
         tree = trees[np.random.choice(len(trees))]
@@ -50,14 +54,14 @@ for sf in [False, True]:
     for point in base_points:
         distances = [get_distance(other_point, point) for other_point in trees]
         trees = trees[np.argpartition(distances, num_points)]
-        samples.append(trees[:num_points])
-        print (np.max([get_distance(other_point, point) for other_point in trees[:num_points]]))
+        samples.append(trees[:num_points]) # closest num_points
 
 samples = np.asarray(samples)
 
 for i in range(len(samples)):
     np.savetxt('./samples/samples{:d}.csv'.format(i), samples[i], delimiter=',')
 
+# Constructing the persistent homology diagrams and distance matrix
 dgms_list = []
 for i in range(len(samples)):
     sample_set = samples[i]
@@ -66,12 +70,11 @@ for i in range(len(samples)):
     m = d.homology_persistence(f)
     dgms = d.init_diagrams(m, f)
     dgms_list.append(dgms[homology_dimension])
-print(dgms_list)
 
 distance_matrix = np.zeros((len(dgms_list), len(dgms_list)))
 for i in range(len(dgms_list)):
-    print(i)
     for j in range(i):
+        # Chose Wasserstein, q=1 to emphasise many near-diagonal points
         dist = d.wasserstein_distance(dgms_list[i], dgms_list[j], q=1)
         distance_matrix[i, j] = dist
         distance_matrix[j, i] = distance_matrix[i, j]

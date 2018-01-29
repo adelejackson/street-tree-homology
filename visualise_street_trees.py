@@ -15,10 +15,11 @@ else:
 trees = np.genfromtxt(tree_file, delimiter=',', comments='!')
 trees = trees[~np.isnan(trees).any(axis=1)]
 
+# Filter SF trees to just get the inner city
 if sf:
     trees = trees[(trees[:,0] > 37.6) & (trees[:,0] < 40)]
 
-print(len(trees))
+# Want to print scatter plot of (longitude, latitude)
 for tree in trees:
     tmp = tree[0]
     tree[0] = tree[1]

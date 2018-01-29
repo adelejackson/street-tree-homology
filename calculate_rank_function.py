@@ -14,6 +14,7 @@ birth_max = 0.0
 death_max = 0.0
 
 def get_rankval(rankfun, key):
+    """ Allows for compression of rankfun by dropping zero-valued points"""
     if key in rankfun:
         return rankfun[key]
     else:
