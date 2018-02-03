@@ -1,4 +1,4 @@
-# street-tree-homology
+# Street Tree Homology
 Analysing the persistent homology of street tree locations in NYC and SF
 
 Written at the AMSI Summer School 2018 for a course in Topological Data Analysis run by Katherine Turner 
@@ -10,7 +10,7 @@ homology of the SF samples.
 Dependencies: [NumPy](http://www.numpy.org/), [MatPlotLib](https://matplotlib.org/), 
 [Dionysus](http://mrzv.org/software/dionysus2/), [Diode](https://github.com/mrzv/diode).
 
-[One file](visualise_street_trees.py), requires [HoloViews](http://holoviews.org/).
+[One file](visualise_street_trees.py) requires [HoloViews](http://holoviews.org/).
 
 Much of the code is based on Katherine Turner's examples, and the rank function calculation on code 
 provided by Vanessa Robins.
