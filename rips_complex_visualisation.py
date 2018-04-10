@@ -35,7 +35,6 @@ class PointBuilder:
         self.cid = points.figure.canvas.mpl_connect('button_press_event', self)
 
     def __call__(self, event):
-        print('click', event)
         if event.inaxes!=self.ax.axes: return
         self.add_point(event.xdata, event.ydata)
 
@@ -87,7 +86,6 @@ class PointBuilder:
     
     def _check_triangle_valid(self, triangle):
         points = triangle.get_xy()
-        print(points)
         for i in range(3):
             if self._edge_length(np.vstack((points[i], 
                 points[i+1]))) > 2*self.radius:
