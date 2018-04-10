@@ -14,3 +14,7 @@ Dependencies: [NumPy](http://www.numpy.org/), [MatPlotLib](https://matplotlib.or
 
 Much of the code is based on Katherine Turner's examples, and the rank function calculation on code 
 provided by Vanessa Robins.
+
+Recently added: a [Rips complex visualisation tool](rips_complex_visualisation.py).
+Once run, you can click to add points then use a slider to adjust the radius for the complex, and view the 2-skeleton of the complex that results.
+Dependencies: NumPy and MatPlotLib.
