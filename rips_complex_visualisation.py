@@ -17,14 +17,17 @@ for i in range(len(tableau20)):
     r, g, b = tableau20[i]
     tableau20[i] = (r/255., g/255., b/255.)
 
-point_colour= tableau20[4]
-edge_colour=tableau20[0]
-circle_colour=tableau20[1]
-fill_colour=tableau20[9]
-
-class PointBuilder:
-    def __init__(self, points, ax, radius=0):
+class RipsComplex:
+    """Class to track a rips complex.
+    https://en.wikipedia.org/wiki/Vietoris%E2%80%93Rips_complex """
+    def __init__(self, points, ax, radius=0, point_colour=tableau20[4],
+            edge_colour=tableau20[0], circle_colour=tableau20[1],
+            fill_colour=tableau20[9]):
         self.ax = ax
+        self.point_colour = point_colour
+        self.edge_colour = edge_colour
+        self.circle_colour = circle_colour
+        self.fill_colour = fill_colour
         self.points = list()
         self.circles = list()
         self.edges = list()
@@ -39,7 +42,7 @@ class PointBuilder:
         self.add_point(event.xdata, event.ydata)
 
     def add_point(self, x, y):
-        new_circle = ptch.Circle((x, y), self.radius, fc=circle_colour,
+        new_circle = ptch.Circle((x, y), self.radius, fc=self.circle_colour,
                 alpha=0.3)
         self.circles.append(new_circle)
         self.ax.add_patch(new_circle)
@@ -53,7 +56,7 @@ class PointBuilder:
             edge, = self.ax.plot([point[0], x], [point[1], y], c='none',ls='-')
             self.edges.append(edge)
             self._update_edge(edge)
-        self.ax.plot([x], [y], c=point_colour, marker='o', ls=None)
+        self.ax.plot([x], [y], c=self.point_colour, marker='o', ls=None)
         self.points.append((x, y))
         plt.draw()
 
@@ -68,13 +71,13 @@ class PointBuilder:
 
     def _update_triangle(self, triangle):
         if self._check_triangle_valid(triangle):
-            triangle.set_color(fill_colour)
+            triangle.set_color(self.fill_colour)
         else:
             triangle.set_color('none')
 
     def _update_edge(self, edge):
         if self._edge_length(edge.get_xydata()) < 2*self.radius:
-            edge.set_c(edge_colour)
+            edge.set_c(self.edge_colour)
         else:
             edge.set_c('none')
 
@@ -109,8 +112,8 @@ axRadius = plt.axes([0.15, 0.1, 0.65, 0.03])
 
 ax.set_title('Click to add points')
 ax.autoscale(enable=False)
-points, = ax.plot([], [], 'o', c=point_colour)  # empty 
-pointbuilder = PointBuilder(points, ax)
+points, = ax.plot([], [], 'o', c=tableau20[4])  # empty 
+pointbuilder = RipsComplex(points, ax)
 
 sRadius = Slider(axRadius, 'Radius', 0.0, 
         abs(ax.axes.get_ylim()[0]-ax.axes.get_ylim()[1])/2, valinit=0)
