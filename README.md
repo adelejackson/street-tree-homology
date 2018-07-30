@@ -1,8 +1,8 @@
 # Street Tree Homology
 Analysing the persistent homology of street tree locations in NYC and SF
 
-Written at the AMSI Summer School 2018 for a course in Topological Data Analysis run by Katherine Turner 
-and Vanessa Robins.
+See [the report](AJackson_StreetTreeHomology.pdf) for a summary.
+
 We examine the persistent homology of street tree location samples in NYC and SF, hypothesising that the 
 regular local level structure of NYC will cause statistically significant differents to the persistent 
 homology of the SF samples.
